@@ -23,9 +23,11 @@ Fill sources on sheet \<span style="text-decoration: underline;">Sources</span>/
 
 Link each source with its target by "Task Id":
 
-[caption id="attachment_1402" align="alignnone" width="493"]<img class="alignnone size-full wp-image-1402" src="https://sheetswithmaxmakhrov.files.wordpress.com/2018/04/source_dample1.png" alt="source_dample1" width="493" height="107" /> ↑ Each row represents 1 connection "Source→Target".[/caption]
+<img class="alignnone size-full wp-image-1402" src="https://sheetswithmaxmakhrov.files.wordpress.com/2018/04/source_dample1.png" alt="source_dample1" width="493" height="107" /> 
+↑ Each row represents 1 connection "Source→Target".
 
-[caption id="attachment_1403" align="alignnone" width="580"]<img class="alignnone size-full wp-image-1403" src="https://sheetswithmaxmakhrov.files.wordpress.com/2018/04/source_dample2.png" alt="source_dample2" width="580" height="146" /> ↑ Connections are made by unique Task Ids. One target may contain multiple sources.[/caption]
+<img class="alignnone size-full wp-image-1403" src="https://sheetswithmaxmakhrov.files.wordpress.com/2018/04/source_dample2.png" alt="source_dample2" width="580" height="146" /> 
+↑ Connections are made by unique Task Ids. One target may contain multiple sources.
 
 Fill in the coordinates: File Id, Sheet name and First row with data. Fill "Query Source" with a proper SQL request.
 
