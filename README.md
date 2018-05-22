@@ -11,7 +11,7 @@ Targets are tables where to paste the info:
 ↑ Each row represents 1 target on sheet \<span style="text-decoration: underline;">Targets</span>/
 
 
-The script needs to know some basic info about your tables. Fill in the info about your targets: file ids, sheet names, and first rows where to paste the info. Give a unique id to each of your targets.
+<p>The script needs to know some basic info about your tables. Fill in the info about your targets: file ids, sheet names, and first rows where to paste the info. Give a unique id to each of your targets.</p>
 
 Add SQL text to a column called "Query Target". The simplest query is:
 
