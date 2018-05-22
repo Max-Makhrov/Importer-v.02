@@ -41,7 +41,7 @@ After you finish with settings:
 	<li>Run import hourly: [<code>Admin</code>] > [<code>Install</code>] > [<code>Set 1 Hour Trigger</code>].  Do it once and the trigger will run constantly.</li>
 </ol>
 If you want to add more connections, set them in new lines, and the Importer will adjust new settings automatically.
-<h3><strong>What the Importer will  do</strong></h3>
+<h3><strong>What the Importer will do</strong></h3>
 The Importer works in 3 steps: Sources → Target → Import.
 
 Step 1, Sources.  See the source table => modify it with SQL. "Query source" is applied in the first step.
