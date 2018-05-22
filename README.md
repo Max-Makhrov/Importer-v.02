@@ -9,7 +9,7 @@ Targets are tables where to paste the info:
 
 <img class="alignnone size-full wp-image-1401" src="https://sheetswithmaxmakhrov.files.wordpress.com/2018/04/target_dample1.png" alt="target_dample1" width="632" height="109" /> 
 ↑ Each row represents 1 target on sheet \<span style="text-decoration: underline;">Targets</span>/
-
+-
 
 <p>The script needs to know some basic info about your tables. Fill in the info about your targets: file ids, sheet names, and first rows where to paste the info. Give a unique id to each of your targets.</p>
 
