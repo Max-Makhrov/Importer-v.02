@@ -1,5 +1,13 @@
 # Importer-v.02
-Imports data between files with conditions.
+
+**Platform:** #Google-Spreadsheets
+
+**Code:** #Google-Apps-Script
+
+**Purpose:** Imports data between files with conditions.
+
+**Landing page:** https://sheetswithmaxmakhrov.wordpress.com/2018/04/10/importer/
+
 
 Set connections between sheets. The script will do the rest.
 <h3><strong>Targets</strong></h3>
