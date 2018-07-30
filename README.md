@@ -8,6 +8,10 @@
 
 **Landing page:** https://sheetswithmaxmakhrov.wordpress.com/2018/04/10/importer/
 
+**Sample file:** https://docs.google.com/spreadsheets/d/1bslkvNqLsp3_W1KeNXT4QPDbSxVu_DOFWYErpbccuiw/copy
+
+**Sample folder** https://drive.google.com/drive/folders/1RsMyx_aQU2RFq2pPvhlmVNRpIJMrqaHO
+
 
 Set connections between sheets. The script will do the rest.
 <h3><strong>Targets</strong></h3>
