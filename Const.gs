@@ -11,14 +11,16 @@ var STR_SHEET_TARGET; // sheet where to
 var STR_SQL_TEXTS; // SQL texts
 var STR_RANGES_TARGET; // Start import from cell
 var STR_CLEARDATA_TARGET; // Clear tardet data (1 = true)
+var STR_DO_TARGET; // Do the task
 var STR_TASKIDS_SOURCES; // Task Ids for sources
 var STR_FILEIDS_SOURCES; // file ids sources
 var STR_SHEETNAMES_SOURCES; // sheet names sources
 var STR_RANGES_SOURCES; // ranges sources
 var STR_SQL_SOURCES; // sql for sources
+var NUM_RUN_TRIGGER; // run import trigger = 1
 
 // get settings from named range
-function getSettings()
+function getSettings_()
 {
   var range = SpreadsheetApp.getActive().getRangeByName(C_RANGE_EVAL);
   
@@ -49,9 +51,11 @@ STR_SHEET_TARGET = data[4];
 STR_SQL_TEXTS = data[5];
 STR_RANGES_TARGET = data[6];
 STR_CLEARDATA_TARGET = data[7];
-STR_TASKIDS_SOURCES = data[8];
-STR_FILEIDS_SOURCES = data[9];
-STR_SHEETNAMES_SOURCES = data[10];
-STR_RANGES_SOURCES = data[11];
-STR_SQL_SOURCES = data[12];
+STR_DO_TARGET = data[8];
+STR_TASKIDS_SOURCES = data[9];
+STR_FILEIDS_SOURCES = data[10];
+STR_SHEETNAMES_SOURCES = data[11];
+STR_RANGES_SOURCES = data[12];
+STR_SQL_SOURCES = data[13];
+NUM_RUN_TRIGGER = data[14];
 }

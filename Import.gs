@@ -1,10 +1,23 @@
 var C_SPLIT_CODES = '&';
 
-function writeDataFromSheets()
+
+function runSelectiveImport_()
+{
+  var selectedTasks = '9;10'; // may be more task IDs: "1;2;5"
+  writeDataFromSheets(selectedTasks);  
+}
+
+/*
+  selectedTasks = /string/ "1;2"
+                            List of tasks for selective import. Use `;` = STR_DELIMEER1
+
+ 
+*/
+function writeDataFromSheets(selectedTasks)
 {
   var start = new Date(); // timer start
   
-  getSettings();
+  getSettings_();
     
   // targets
   var allTargetIds = STR_TASKIDS.split(STR_DELIMEER1);
@@ -13,6 +26,7 @@ function writeDataFromSheets()
   var allSqlTexts = STR_SQL_TEXTS.split(STR_DELIMEER1);
   var allCellsTarget = STR_RANGES_TARGET.split(STR_DELIMEER1);
   var allClearDataTarget = STR_CLEARDATA_TARGET.split(STR_DELIMEER1);
+  var allDoTasks = STR_DO_TARGET.split(STR_DELIMEER1);
 
   // sources
   var sourcesIdsTasks = STR_TASKIDS_SOURCES.split(STR_DELIMEER1);
@@ -20,6 +34,29 @@ function writeDataFromSheets()
   var sourcesSheetNames = STR_SHEETNAMES_SOURCES.split(STR_DELIMEER1);
   var sourcesRanges = STR_RANGES_SOURCES.split(STR_DELIMEER1);
   var sourcesSqls = STR_SQL_SOURCES.split(STR_DELIMEER1);
+  
+  
+  
+  // selective tasks
+  if (typeof selectedTasks !== "undefined")   
+  {     
+    // double check
+    if (selectedTasks.length > 0 && typeof selectedTasks === 'string') 
+    {    
+      // get all tasks to do from selected by a user
+      allDoTasks = getSelectiveTasks_(allTargetIds, selectedTasks.split(STR_DELIMEER1));   
+    }
+    else
+    {
+      // dealing with event trigger?      
+      if (typeof selectedTasks.hour !== "undefined")
+      {
+        if (NUM_RUN_TRIGGER != 1) { return -1; } // trigger is set not to run!
+      }      
+    }    
+  }
+  
+  
   
   // get sources
   var sourcesArray = sourcesIdsTasks.map(function(elt, i) { return [elt, sourcesIdsFiles[i] + C_SPLIT_CODES + sourcesSheetNames[i] + C_SPLIT_CODES + sourcesRanges[i]]; } );
@@ -36,7 +73,6 @@ function writeDataFromSheets()
         source = sources[key];
         source.subTaskIds = [sourcesIdsTasks[i]];
         source.data = []; 
-        source.sqlIndex = 0;
         source.sqlArray = [sourcesSqls[i]];
       }
       else
@@ -54,29 +90,33 @@ function writeDataFromSheets()
   var tasks = {};
   var task = {};
   var subTasks = {};
-  var subTask = {};
-  var taskKey = '';  
+  var subTask = {}; 
   allTargetIds.forEach(
-  function(elt, i) {    
-	taskKey = allFileIdsTo[i] + C_SPLIT_CODES + allSheetNamesTo[i] + C_SPLIT_CODES + allCellsTarget[i];
-	// get tasks objects
-	if (!(taskKey in tasks))
-	{
-      tasks[taskKey] = {}; 
-      task = tasks[taskKey];		
-	  task.clearDataTarget = allClearDataTarget[i];
-      task.subTasksIds = [elt];	  
-	}
-    else
+  function(elt, i) {
+    var doTask = allDoTasks[i];
+    if (doTask == 1)
     {
-	  task = tasks[taskKey];
-	  task.subTasksIds.push(elt);
-	}
-    // get subTask object
-    subTasks[elt] = {};
-    subTask = subTasks[elt];
-    subTask.sql = allSqlTexts[i];
-    subTask.sourceIds = sourcesArray.filter(function(source) { return source[0] == elt; } );
+      var taskKey = allFileIdsTo[i] + C_SPLIT_CODES + allSheetNamesTo[i] + C_SPLIT_CODES + allCellsTarget[i];
+      // get tasks objects
+      if (!(taskKey in tasks))
+      {
+        tasks[taskKey] = {}; 
+        task = tasks[taskKey];		
+        task.clearDataTarget = allClearDataTarget[i];
+        task.subTasksIds = [elt];	  
+      }
+      else
+      {
+        task = tasks[taskKey];
+        task.subTasksIds.push(elt);
+      }
+      // get subTask object
+      subTasks[elt] = {};
+      subTask = subTasks[elt];
+      subTask.sql = allSqlTexts[i];
+      subTask.sourceIds = sourcesArray.filter(function(source) { return source[0] == elt; } );      
+    }
+
   });
   
   
@@ -111,17 +151,17 @@ function writeDataFromSheets()
    Logger.log(sources);
    --------------------------------------------------------------------------------
    {1H5hBWZunzMrY8GwM0mBEZgIHhnE42WAuUO_JD0vK6VY&#Grades&a3:d3=
-      {data=[], subTaskIds=[1], sqlIndex=0, sqlArray = ['select * from ?']}, 
+      {data=[], subTaskIds=[1], sqlArray = ['select * from ?']}, 
     1dqmE-yidoQALNKLxDnunDaXDhrq5P45koFt-VpnqWPU&Tasks&A2:AG2=
-      {data=[], subTaskIds=[2], sqlIndex=0, sqlArray = ['select * from ?']}, 
+      {data=[], subTaskIds=[2], sqlArray = ['select * from ?']}, 
     1dqmE-yidoQALNKLxDnunDaXDhrq5P45koFt-VpnqWPU&Archive&A3:AQ3=
-      {data=[], subTaskIds=[6], sqlIndex=0, sqlArray = ['select * from ?']}, 
+      {data=[], subTaskIds=[6], sqlArray = ['select * from ?']}, 
     1dqmE-yidoQALNKLxDnunDaXDhrq5P45koFt-VpnqWPU&Archive&A2:AG2=
-      {data=[], subTaskIds=[3], sqlIndex=0, sqlArray = ['select * from ?']}, 
+      {data=[], subTaskIds=[3], sqlArray = ['select * from ?']}, 
     1H5hBWZunzMrY8GwM0mBEZgIHhnE42WAuUO_JD0vK6VY&Task Artists&A7:BU7=
-      {data=[], subTaskIds=[4, 5], sqlIndex=0, sqlArray = ['select * from ?', 'select * from ?']}, 
+      {data=[], subTaskIds=[4, 5], ssqlArray = ['select * from ?', 'select * from ?']}, 
     1dqmE-yidoQALNKLxDnunDaXDhrq5P45koFt-VpnqWPU&Old Archive&A3:AQ3=
-      {data=[], subTaskIds=[6], sqlIndex=0, sqlArray = ['select * from ?']}}
+      {data=[], subTaskIds=[6],  sqlArray = ['select * from ?']}}
    
    
    */
@@ -146,8 +186,8 @@ Logger.log(task);
     var sheet = createSheetIfNotExists(file, fileSheetRange[1]);
     var range = sheet.getRange(fileSheetRange[2]);
     var row = range.getRow();
-    var col = range.getColumn();
-Logger.log(data[0]);
+    var col = range.getColumn(); 
+Logger.log(data[data.length - 1]);    
     clearDataInTarget_(task.clearDataTarget, row, col, sheet, data[0].length);
     writeDataIntoSheet_(file, sheet, data, row, col);
   }   
@@ -155,10 +195,31 @@ Logger.log(data[0]);
   
   Logger.log(new Date() - start); // timer end
   
-}  
+}
 
 
 
+function test_getSelectiveTasks_()
+{
+  var allTargetIds = "1;2;3;4;5;6".split(';');
+  var selectedTasks = "1;5;8".split(';');
+  Logger.log(getSelectiveTasks_(allTargetIds, selectedTasks));
+  // [1, 0, 0, 0, 1, 0]
+}
+
+/*
+  allTargetIds = ['1','2','3','4','5','6']
+  selectedTasks = ['1', '5', '8']
+  
+  
+  output:        [ 1,  0,  0,  0,  1,  0 ]
+*/
+function getSelectiveTasks_(allTargetIds, selectedTasks)
+{
+  var isIn_ = function(elt) { if (selectedTasks.indexOf(elt) > -1) { return '1'; } else { return '0'; } };
+  var result =  allTargetIds.map(isIn_);
+  return result;  
+}
 
 
 
@@ -168,6 +229,8 @@ function clearDataInTarget_(cleardata, row, col, sheet, l)
   if(cleardata != 1) { return -1; }
   var numRows = sheet.getLastRow() - row + 1;
   if (numRows < 1) { return -2; } 
+
+  
   var rangeToClear = sheet.getRange(row, col, sheet.getLastRow() , l);
   rangeToClear.clearContent();  
 }
@@ -204,6 +267,8 @@ function getDataFromSubTasks_(subTaskIds, subTasks, sources)
     array = getDataFromSubTask_(subTask.sourceIds, subTask.sql, sources, subTaskKey);
     if('null' != array && array[0] != undefined) { arrays.push(array); }     
   }
+ 
+  
   return combine2DArrays_(arrays);
 }
 
@@ -222,15 +287,21 @@ function getDataFromSubTask_(sourceIds, sqlText, sources, subTaskKey)
 
    */
   var dataSets = [];
+ Logger.log('-----------------------ggg-----------------'); 
+  Logger.log(sourceIds);
+  Logger.log(sources);
+  Logger.log(subTaskKey);
+ Logger.log('-----------------------ggg-----------------');  
+  
   sourceIds.forEach(
   function(elt)
   {
-    var data = getDataFromSource_(elt[1], sources, subTaskKey);                 
-    dataSets.push(data);                  
+    var data = getDataFromSource_(elt[1], sources, subTaskKey);
+    if('null' != data && data[0] != undefined) { dataSets.push(data); }                   
   }
   );
         
-  var result = getAlaSqlResult_(dataSets, sqlText);
+  var result = getResultFromRequset_(dataSets, sqlText);
       
   return result;
   
@@ -247,15 +318,22 @@ function getDataFromSource_(key, sources, subTaskKey)
     sources[...]:
     --------------------------------------------------------------------------------
      {1H5hBWZunzMrY8GwM0mBEZgIHhnE42WAuUO_JD0vK6VY&#Grades&a3:d3=
-        {data=[], subTaskIds=[1], sqlIndex=0, sqlArray = ['select * from ?']},  
+        {data=[], subTaskIds=[1], sqlArray = ['select * from ?']},  
   */
   var source = sources[key];  
   
   // delete subTasksKey from subTaskIds
-  var subTaskIds = source.subTaskIds;
+  var subTaskIds = source.subTaskIds;     
+  
   var index = subTaskIds.indexOf(subTaskKey);
   subTaskIds.splice(index, 1); // delete sub-task we are doing
+  var sqlArray = source.sqlArray;
+  var sql = sqlArray[index]; 
+  sqlArray.splice(index, 1); // delete sub-task we are doing
+   
+    
   source.subTaskIds = subTaskIds; // return to original array
+  source.sqlArray = sqlArray; // return to original array
   
   var data = source.data;  
   
@@ -296,13 +374,8 @@ Logger.log('remember data');
     source.data = result;  
   }
   
-  
-  // run sql wiht a source
-  var sql = source.sqlArray[source.sqlIndex];
-  source.sqlIndex++; // next time go to next sql
-  result = getAlaSqlResult_([result], sql);
-  
-  
+  result = getAlaSqlResult_([result], sql); 
+    
   sources[key] = source; // return modified source
   return result;
   
