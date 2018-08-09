@@ -69,6 +69,8 @@ function test_join2Arrays()
 function join2Arrays_(index, arr1, arr2)
 {
   
+  if (typeof arr2 === "undefined") return arr1; // if table2 is empty
+  
   var result = [];
   
   var returnKey_ = function(row) { return row[index - 1]; }
